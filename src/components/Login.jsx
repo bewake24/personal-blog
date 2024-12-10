@@ -9,12 +9,14 @@ import { useDispatch } from "react-redux";
 import { login as authLogin } from "../store/authSlice";
 
 function Login() {
+  console.log("loaded");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
 
   const login = async (data) => {
+    console.log("Igot clicked");
     setError("");
     try {
       const session = await authService.login(data);

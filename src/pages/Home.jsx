@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
-import appwriteservice from "../appwrite/config";
+import React from "react";
+import appwriteService from "../appwrite/config";
+import { useState } from "react";
+import { useEffect } from "react";
 import Container from "../components/container/Container";
 import PostCard from "../components/PostCard";
 
@@ -7,31 +9,30 @@ function Home() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    appwriteservice.getPosts([]).then((posts) => {
+    appwriteService.getPosts([]).then((posts) => {
       if (posts) {
-        console.log(posts);
         setPosts(posts.documents);
       }
     });
   }, []);
-
   if (posts.length === 0) {
     return (
       <div className="w-full py-8">
         <Container>
           <div className="flex flex-wrap">
-            <h2> Login to read posts</h2>
+            <h1>Login to read posts</h1>
           </div>
         </Container>
       </div>
     );
   }
+
   return (
     <div className="w-full py-8">
       <Container>
         <div className="flex flex-wrap">
           {posts.map((post) => (
-            <div key={post.$id} className="p2 w-1/4 ">
+            <div className="p-2 w-1/4" key={post.$id}>
               <PostCard {...post} />
             </div>
           ))}
