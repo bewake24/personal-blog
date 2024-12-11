@@ -44,13 +44,13 @@ export class Service {
 
   async createPost({ title, slug, content, featuredImage, status, userId }) {
     try {
-      await this.databases.createDocument(
+      return await this.databases.createDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         slug,
         { title, content, featuredImage, status, userId }
       );
-    } catch (error) {
+    } catch (err) {
       console.log(
         "Getting Error in appwrite service :: createDocument() ::",
         err
@@ -92,10 +92,13 @@ export class Service {
   }
 
   //   Storage services
-
   async uploadFile(file) {
     try {
-      await this.bucket.createFile(conf.appwriteBucketId, ID.unique(), file);
+      return await this.bucket.createFile(
+        conf.appwriteBucketId,
+        ID.unique(),
+        file
+      );
     } catch (err) {
       console.log("Getting Error in appwrite service :: createFile() ::", err);
     }
@@ -113,9 +116,8 @@ export class Service {
 
   getFilePreview(fileId) {
     const file = this.bucket.getFilePreview(conf.appwriteBucketId, fileId);
-    console.log(file);
 
-    return file.href;
+    return file;
   }
 }
 

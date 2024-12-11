@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import appwriteService from "../appwrite/config";
-import { useState } from "react";
-import { useEffect } from "react";
-import Container from "../components/container/Container";
-import PostCard from "../components/PostCard";
+import { Container, PostCard } from "../components";
+import { useSelector } from "react-redux";
 
 function Home() {
   const [posts, setPosts] = useState([]);
+  const user = useSelector((state) => state.auth);
+  console.log(user);
 
   useEffect(() => {
     appwriteService.getPosts([]).then((posts) => {

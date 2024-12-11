@@ -1,11 +1,9 @@
 import { Outlet } from "react-router-dom";
-import Header from "./components/header/Header";
-import Footer from "./components/footer/Footer";
 import { useEffect, useState } from "react";
 import authService from "./appwrite/auth";
 import { useDispatch } from "react-redux";
 import { login, logout } from "./store/authSlice";
-import conf from "./conf/conf";
+import { Loader, Header, Footer } from "./components";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -35,6 +33,6 @@ export default function App() {
       </div>
     </div>
   ) : (
-    "Loading........."
+    <Loader />
   );
 }

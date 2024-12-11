@@ -1,15 +1,12 @@
 import React, { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import Button from "../Button";
-import Input from "../Input";
-import RTE from "../RTE";
-import Select from "../Select";
+import { Select, Button, RTE, Input } from "../";
 import appwriteService from "../../appwrite/config";
 import { useSelector } from "react-redux";
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function PostForm({ post }) {
-  const { register, handleSubmit, watch, setValue, control, getValues } =
+  const { register, handleSubmit, watch, getValues, setValue, control } =
     useForm({
       defaultValues: {
         title: post?.title || "",
@@ -27,8 +24,8 @@ function PostForm({ post }) {
       return value
         .trim()
         .toLowerCase()
-        .replace(/[^a-zA-Z\d\s]+/g, "_")
-        .replace(/\s/g, "_");
+        .replace(/[^a-zA-Z\d\s]+/g, "-")
+        .replace(/\s+/g, "-");
     }
   }, []);
 
@@ -40,9 +37,9 @@ function PostForm({ post }) {
     });
   }, [watch, slugTransform, setValue]);
 
-  const submit = async () => {
+  const submit = async (data) => {
     if (post) {
-      const file = data.image[0]
+      const file = data.image?.[0]
         ? await appwriteService.uploadFile(data.image[0])
         : null;
 
@@ -59,7 +56,7 @@ function PostForm({ post }) {
         navigate(`/post/${dbPost.$id}`);
       }
     } else {
-      const file = appwriteService.uploadFile(data.image[0]);
+      const file = await appwriteService.uploadFile(data.image?.[0]);
       if (file) {
         const fileId = file.$id;
         data.featuredImage = fileId;
@@ -74,8 +71,9 @@ function PostForm({ post }) {
       }
     }
   };
+
   return (
-    <form onSubmit={handleSubmit(submit)} className=" flex flex-wrap ">
+    <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
       <div className="w-2/3 px-2">
         <Input
           label="Title"
@@ -84,8 +82,8 @@ function PostForm({ post }) {
           className="mb-4"
         />
         <Input
-          label="slug"
-          placeholder="slug"
+          label="Slug"
+          placeholder="Slug"
           {...register("slug", { required: true })}
           onInput={(e) => {
             setValue("slug", slugTransform(e.currentTarget.value), {
@@ -95,7 +93,7 @@ function PostForm({ post }) {
         />
         <RTE
           label="Content"
-          name="Content"
+          name="content"
           control={control}
           defaultValue={getValues("content")}
         />
@@ -104,7 +102,7 @@ function PostForm({ post }) {
         <Input
           label="Featured Image"
           type="file"
-          accept="image/png, image/jpg, image/jpeg "
+          accept="image/png, image/jpg, image/jpeg"
           className="mb-4"
           {...register("image", { required: !post })}
         />

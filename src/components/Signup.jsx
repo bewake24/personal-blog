@@ -1,9 +1,7 @@
 import authService from "../appwrite/auth";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import Button from "./Button";
-import Input from "./Input";
-import Logo from "./Logo";
+import { Button, Input, Logo } from "../components";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { login } from "../store/authSlice";
@@ -15,6 +13,7 @@ function Signup() {
   const { register, handleSubmit } = useForm();
 
   const create = async (data) => {
+    console.log(`I got clicked ${data}`);
     setError("");
     try {
       console.log(data);

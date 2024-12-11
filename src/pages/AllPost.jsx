@@ -20,7 +20,7 @@ function AllPost() {
       <div className="w-full py-8">
         <Container>
           <div className="flex flex-wrap">
-            <h2> Login to read posts</h2>
+            <h2> No Post Found</h2>
           </div>
         </Container>
       </div>

@@ -1,54 +1,51 @@
 import React from "react";
 import { Controller } from "react-hook-form";
 import { Editor } from "@tinymce/tinymce-react";
+import conf from "../conf/conf";
 
-function RTE({ name, control, defaultValue = "", label }) {
+function RTE({ name = "content", control, label, defaultValue = "" }) {
   return (
     <div className="w-full">
       {label && <label className="inline-block mb-1 pl-1">{label}</label>}
       <Controller
-        name={name || "content"}
+        name={name}
         control={control}
-        render={({ field: { onChange } }) => (
+        defaultValue={defaultValue}
+        rules={{ required: true }}
+        render={({ field: { onChange, value } }) => (
           <Editor
-            initialValue={defaultValue}
+            value={value}
+            onEditorChange={onChange}
+            apiKey={conf.tinyMceApiKey}
             init={{
               branding: false,
               height: 500,
               menubar: true,
               plugins: [
-                "a11ychecker",
+                "image",
                 "advlist",
-                "advcode",
-                "advtable",
                 "autolink",
-                "checklist",
-                "markdown",
                 "lists",
                 "link",
-                "image",
                 "charmap",
                 "preview",
                 "anchor",
                 "searchreplace",
                 "visualblocks",
-                "powerpaste",
+                "code",
                 "fullscreen",
-                "formatpainter",
                 "insertdatetime",
                 "media",
                 "table",
+                "code",
                 "help",
                 "wordcount",
               ],
               toolbar:
-                "undo redo | casechange blocks | bold italic backcolor | " +
-                "alignleft aligncenter alignright alignjustify | " +
-                "bullist numlist checklist outdent indent | removeformat | a11ycheck code table help",
+                "undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
               content_style:
                 "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
             }}
-            onEditorChange={onChange}
           />
         )}
       />

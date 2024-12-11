@@ -12,11 +12,10 @@ export class AuthService {
 
     this.account = new Account(this.client);
   }
-
   async createAccount({ email, password, name }) {
     try {
       const userAccount = await this.account.create(
-        ID.unique,
+        ID.unique(),
         email,
         password,
         name
@@ -33,14 +32,14 @@ export class AuthService {
   }
   async login({ email, password }) {
     try {
-      return await this.account.createEmailPasswordSession(email, password); //used createEmailSession here
-    } catch (err) {
-      throw err;
+      return await this.account.createEmailPasswordSession(email, password);
+    } catch (error) {
+      throw error;
     }
   }
   async getCurrentUser() {
     try {
-      await this.account.get();
+      return await this.account.get();
     } catch (err) {
       console.log(
         "Getting Error in appwrite service :: getCurrentUser() ::",
