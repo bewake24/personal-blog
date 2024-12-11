@@ -1,41 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import appwriteService from "../appwrite/config";
 import { Container, PostCard } from "../components";
-import { useSelector } from "react-redux";
 
 function Home() {
   const [posts, setPosts] = useState([]);
-  const user = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    appwriteService.getPosts([]).then((posts) => {
+    (async () => {
+      setLoading(true);
+      const posts = await appwriteService.getPosts([]);
       if (posts) {
         setPosts(posts.documents);
       }
-    });
+      setLoading(false);
+    })();
   }, []);
-  if (posts.length === 0) {
-    return (
-      <div className="w-full py-8">
-        <Container>
-          <div className="flex flex-wrap">
-            <h1>Login to read posts</h1>
-          </div>
-        </Container>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full py-8">
       <Container>
-        <div className="flex flex-wrap">
-          {posts.map((post) => (
-            <div className="p-2 w-1/4" key={post.$id}>
-              <PostCard {...post} />
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <div className="flex flex-wrap">
+            {posts.length !== 0 ? (
+              posts.map((post) => (
+                <div key={post.$id} className="p2 w-1/4 ">
+                  <PostCard {...post} />
+                </div>
+              ))
+            ) : (
+              <h2> No Post Found</h2>
+            )}
+          </div>
+        )}
       </Container>
     </div>
   );

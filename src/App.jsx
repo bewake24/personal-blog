@@ -19,19 +19,15 @@ export default function App() {
       .finally(() => setLoading(false));
   }, [dispatch]);
 
-  return !loading ? (
+  return (
     <div className="min-h-screen flex flex-wrap content-between bg-gray-400">
       <div className="w-full block">
         <Header />
-        <main>
-          <Outlet />
-        </main>
+        <main>{loading ? <Loader /> : <Outlet />}</main>
       </div>
       <div className="w-full block">
         <Footer />
       </div>
     </div>
-  ) : (
-    <Loader />
   );
 }

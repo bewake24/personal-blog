@@ -23,7 +23,7 @@ function Post() {
         }
       });
     }
-  }, []);
+  }, [slug, navigate]);
 
   const deletePost = async () => {
     await appwriteService.deletePost(post.$id).then(async (status) => {
@@ -33,17 +33,18 @@ function Post() {
       }
     });
   };
+
   return post ? (
     <div className="py-8">
       <Container>
-        <div className="w-full justify-center flex mb-4 relative border rounded-xl p-2">
+        <div className="relative w-full mb-4 border rounded-xl overflow-hidden">
           <img
             src={appwriteService.getFilePreview(post.featuredImage)}
             alt={post.title}
-            className="rounded-xl"
+            className="w-full object-cover aspect-[16/4]"
           />
           {isAuthor && (
-            <div className="absoulte-right-6 top-6">
+            <div className="absolute top-4 right-4 flex space-x-3">
               <Link to={`/edit-post/${post.$id}`}>
                 <Button className="mr-3" bgColor="bg-green-500">
                   Edit
