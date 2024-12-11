@@ -3,8 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
 import appwriteService from "../appwrite/config";
-import Button from "../components/Button";
-import Container from "../components/container/Container";
+import { Button, Container } from "../components";
 
 function Post() {
   const [post, setPost] = useState(null);
@@ -24,13 +23,13 @@ function Post() {
         }
       });
     }
-  });
+  }, []);
 
   const deletePost = async () => {
     await appwriteService.deletePost(post.$id).then(async (status) => {
       if (status) {
         await appwriteService.deleteFile(post.featuredImage);
-        useNavigate("/");
+        navigate("/");
       }
     });
   };

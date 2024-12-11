@@ -13,7 +13,6 @@ export default function App() {
     authService
       .getCurrentUser()
       .then((userData) => {
-        console.log(userData);
         if (userData) dispatch(login({ userData }));
         else dispatch(logout());
       })

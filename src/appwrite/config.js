@@ -16,7 +16,7 @@ export class Service {
 
   async getPost(slug) {
     try {
-      await this.databases.getDocument(
+      return await this.databases.getDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         slug
@@ -76,13 +76,13 @@ export class Service {
 
   async deletePost(slug) {
     try {
-      await this.databases.updateDocument(
+      await this.databases.deleteDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
         slug
       );
       return true;
-    } catch (error) {
+    } catch (err) {
       console.log(
         "Getting Error in appwrite service :: deleteDocument() ::",
         err

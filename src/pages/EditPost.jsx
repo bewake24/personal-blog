@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import appwriteService from "../appwrite/config";
 import { Container, PostForm } from "../components";
@@ -8,22 +8,25 @@ function EditPost() {
   const navigate = useNavigate();
   const { slug } = useParams();
 
-  useEffect(() => {
+  const fetchPost = useCallback(async () => {
     if (slug) {
-      appwriteService.getPost(slug).then((post) => {
-        if (post) {
-          setPost(post);
-        } else {
-          navigate("/");
-        }
-      });
+      const fetchedPost = await appwriteService.getPost(slug);
+      if (fetchedPost) {
+        setPost(fetchedPost);
+      } else {
+        navigate("/");
+      }
     }
   }, [slug, navigate]);
+
+  useEffect(() => {
+    fetchPost();
+  }, [fetchPost]);
 
   return (
     <div className="py-6">
       <Container>
-        <PostForm post={post} />
+        {post ? <PostForm post={post} /> : <p>Loading...........</p>}
       </Container>
     </div>
   );

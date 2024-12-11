@@ -15,16 +15,11 @@ function Login() {
   const [error, setError] = useState("");
 
   const login = async (data) => {
-    console.log("Igot clicked");
     setError("");
     try {
       const session = await authService.login(data);
-      console.log(`Session created Successfully `);
-      console.log(session);
       if (session) {
         const userData = await authService.getCurrentUser();
-        console.log(`I'm user data from login.jsx `);
-        console.log(userData);
         if (userData) dispatch(authLogin({ userData }));
         navigate("/");
       }
